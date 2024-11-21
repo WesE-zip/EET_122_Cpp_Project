@@ -61,8 +61,35 @@ string CeasarEncr(string inp, int shift){
     return outp;
 }
 
+string CeasarDcr(string inp, int shift){
+    string outp;
+    bool test = false;
+    int shiftnum;
+    
+    string alph = "abcdefghijklmnopqrstuvwxyz";
+
+    for(int i = 0;i < inp.length();i++){
+        for(int l = 0; l < alph.length();l++){
+            if(inp[i] == alph[l]){
+                if((l - shift) > 0){
+                    shiftnum = l - shift;
+                } else {
+                    shiftnum = (l - shift) + 26;
+                }
+                outp.push_back(alph[shiftnum]);
+                test = true;
+            }
+        }
+        test = false;
+    }
+
+
+    return outp;
+}
+
 int main() {
     string word, cut;
+    int num;
     word = ReadMsg("string");
 
     cut = separate(word);
@@ -70,7 +97,16 @@ int main() {
     cout << word <<"\n";
     cout << cut << "\n";
 
-    cout << CeasarEncr(cut, GetNum("number of the shift must be < 26")) << endl;
+    cout << "to encript press 1 to decript press 2";
+    cin >> num;
+
+    if(num == 1){
+        cout << CeasarEncr(cut, GetNum("number of the shift must be < 26")) << endl;
+    }else {
+        cout << CeasarDcr(cut, GetNum("number of the shift must be < 26")) << endl;
+    }
+
+    
 
 
 
