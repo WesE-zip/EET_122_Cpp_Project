@@ -3,10 +3,10 @@
 #include <string>
 using namespace std;
 
-string ReadMsg(){
+string ReadMsg(string thing){
     string inp;
 
-    cout << "Input the string: ";
+    cout << "Input the " << thing << ": ";
 
     getline(cin, inp);
   
@@ -17,7 +17,7 @@ string ReadMsg(){
 
 int main() {
     string word;
-    word = ReadMsg();
+    word = ReadMsg("string");
 
     cout << word <<"\n";
 
