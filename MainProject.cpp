@@ -25,10 +25,10 @@ int GetNum(string thing){
 
 string separate(string inp){
     string outp;
-
+    
     for(int i = 0;i < inp.length();i++){
         if(isalpha(inp[i])){
-            outp.push_back(inp[i]);
+            outp.push_back(tolower(inp[i]));
         }
     }
 
@@ -97,7 +97,7 @@ int main() {
     cout << word <<"\n";
     cout << cut << "\n";
 
-    cout << "to encript press 1 to decript press 2";
+    cout << "to encript press 1 to decript press 2 ";
     cin >> num;
 
     if(num == 1){
