@@ -100,7 +100,7 @@ void CeasarDcr(){
     for(int i = 0;i < cutDcr.length();i++){
         for(int l = 0; l < alph.length();l++){
             if(cutDcr[i] == alph[l]){
-                if((l - CesarShiftnum) > 0){
+                if((l - CesarShiftnum) >= 0){
                     shift = l - CesarShiftnum;
                 } else {
                     shift = (l - CesarShiftnum) + 26;
@@ -142,13 +142,25 @@ void runCeasar(){
 }
 
 
-/*void run(){
+void run(){
+    int t;
 
-}*/
+
+    while(t != 0){
+        cout << "Press 1 for Ceaser Cypher \nPress 0 to exit" << endl;
+        cin >> t;
+        cin.ignore();
+        if(t == 1){
+            runCeasar();
+        }else if(t != 0){
+            cout << "ERROR" << endl;
+        }
+    }
+}
 
 int main() {
     
-    runCeasar();
+    run();
 
 
 
