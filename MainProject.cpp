@@ -5,16 +5,27 @@ using namespace std;
 
 
 string word, cut, encripted, inpToDcr, cutDcr, DCRed;
+string Vkey, VkeyT, Akey;
 int CesarShiftnum;
+int Lnums[200];
 
-const string alph = "abcdefghijklmnopqrstuvwxyz";
+const string alph = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+void clear() {
+    word = "";
+    cut = "";
+    encripted = "";
+    inpToDcr = "";
+    cutDcr = "";
+    DCRed = "";
+}
 
 string separate(string inp){
     string outp;
     
     for(int i = 0;i < inp.length();i++){
         if(isalpha(inp[i])){
-            outp.push_back(tolower(inp[i]));
+            outp.push_back(toupper(inp[i]));
         }
     }
 
@@ -26,9 +37,7 @@ string ReadThing(string thing){
 
     cout << "Input the " << thing << ": ";
     cin.ignore();
-    getline(cin, inp);
-
-  
+    getline(cin, inp);  
 
     return inp;
 }
@@ -45,6 +54,10 @@ void ReadCypher(){
     cin.ignore();
     getline(cin, inpToDcr);
     cutDcr = separate(inpToDcr);    
+}
+
+void toNum(string inp) {
+
 }
 
 int GetNum(string thing){
@@ -139,19 +152,132 @@ void runCeasar(){
     }
 
     cout << "End Ceaser Cypher" << endl;
+    clear();
 }
 
+void makeKeyV(int t) {
+    int L;
+    int KL = VkeyT.length();
+    string K = VkeyT;
+
+    if(t == 1){
+        L = cut.length();
+    }
+    if(t == 2){
+        L = cutDcr.length();
+    }
+
+
+    while(L >= K.length()){
+        for(int i = 0; i < KL && K.length() <= L; i++) {
+            K.push_back(VkeyT[i]);
+        }
+    }
+
+    Vkey = K;
+}
+
+void VigenereEncr(){
+    string outp;
+    int a, b, t, f;
+    for(int i = 0; i < cut.length(); i++) {
+        a = alph.find(cut[i]);
+        b = alph.find(Vkey[i]);
+        t = (a + b) % 26;
+        if((t) < 26){
+            if(t < 0){
+                f = t + 26;
+            }else{
+                f = t;
+            }
+        }else{
+            f = t - 26;
+        }
+        outp.push_back(alph[f]);
+    }
+    encripted = outp;
+}
+
+void VigenereDcr(){
+    string outp;
+    int a, b, t, f;
+    for(int i = 0; i < cutDcr.length(); i++) {
+        a = alph.find(cutDcr[i]);
+        b = alph.find(Vkey[i]);
+        t = (a - b) % 26;
+        if((t) < 26){
+            if(t < 0){
+                f = t + 26;
+            }else{
+                f = t;
+            }
+        }else{
+            f = t - 26;
+        }
+        outp.push_back(alph[f]);
+    }
+    DCRed = outp;
+}
+
+void runVigenere() {
+    int t;
+    cout << "Input the key: ";
+    cin >> VkeyT;
+
+    while(t != 0){
+        cout << "Press 0 to exit\nPress 1 to encript\nPress 2 to decript \n";
+        cin >> t;
+        if(t == 1){
+            ReadPlain();
+            makeKeyV(t);
+            cout << Vkey << endl;
+            VigenereEncr();
+            encrOutp("The key is: " + VkeyT);
+        }else if(t == 2){
+            ReadCypher();
+            makeKeyV(t);
+            VigenereDcr();
+            dcrOutp("The key is: " + VkeyT);
+        }else if(t != 0){
+            cout << "ERROR" << endl;
+        }
+    }
+
+    cout << "End Vigenere Cypher" << endl;
+    clear();
+}
+
+void makeKeyA(int t) {
+    int L;
+    string K = Akey;
+    string msg;
+
+    if(t == 1){
+        L = cut.length();
+        msg = cut;
+    }
+    if(t == 2){
+        L = cutDcr.length();
+        msg = cutDcr;
+    }
+
+    K += msg.substr(0, (msg.length() - 2));
+
+    Vkey = K;
+}
 
 void run(){
     int t;
 
 
     while(t != 0){
-        cout << "Press 1 for Ceaser Cypher \nPress 0 to exit" << endl;
+        cout << "Press 1 for Ceaser Cypher \nPress 2 for Vigenere Cypher \nPress 0 to exit" << endl;
         cin >> t;
         cin.ignore();
         if(t == 1){
             runCeasar();
+        }else if(t == 2) {
+            runVigenere();
         }else if(t != 0){
             cout << "ERROR" << endl;
         }
