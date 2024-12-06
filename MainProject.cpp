@@ -266,18 +266,51 @@ void makeKeyA(int t) {
     Vkey = K;
 }
 
+void runAutokey() {
+    int t;
+    cout << "Input the key: ";
+    cin >> Akey;
+    ReadPlain();
+    makeKeyA(t);
+    cout << Vkey << endl;
+    VigenereEncr();
+    encrOutp("The key is: " + Akey);
+    while(t != 0){
+        cout << "Press 0 to exit\nPress 1 to encript\nPress 2 to decript \n";
+        cin >> t;
+        if(t == 1){
+            ReadPlain();
+            makeKeyA(t);
+            cout << Vkey << endl;
+            VigenereEncr();
+            encrOutp("The key is: " + Akey);
+        }else if(t == 2){
+            ReadCypher();
+            VigenereDcr();
+            dcrOutp("The key is: " + Akey);
+        }else if(t != 0){
+            cout << "ERROR" << endl;
+        }
+    }
+
+    cout << "End Autokey Cypher" << endl;
+    clear();
+}
+
 void run(){
     int t;
 
 
     while(t != 0){
-        cout << "Press 1 for Ceaser Cypher \nPress 2 for Vigenere Cypher \nPress 0 to exit" << endl;
+        cout << "Press 1 for Ceaser Cypher \nPress 2 for Vigenere Cypher \nPress 3 for Autokey Cypher \nPress 0 to exit" << endl;
         cin >> t;
         cin.ignore();
         if(t == 1){
             runCeasar();
         }else if(t == 2) {
             runVigenere();
+        }else if(t == 3){
+            runAutokey();
         }else if(t != 0){
             cout << "ERROR" << endl;
         }
