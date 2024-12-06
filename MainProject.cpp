@@ -3,15 +3,61 @@
 #include <string>
 using namespace std;
 
-string ReadMsg(string thing){
+
+string word, cut, encripted, inpToDcr, cutDcr, DCRed;
+string Vkey, VkeyT, Akey;
+int CesarShiftnum;
+int Lnums[200];
+
+const string alph = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+void clear() {
+    word = "";
+    cut = "";
+    encripted = "";
+    inpToDcr = "";
+    cutDcr = "";
+    DCRed = "";
+}
+
+string separate(string inp){
+    string outp;
+    
+    for(int i = 0;i < inp.length();i++){
+        if(isalpha(inp[i])){
+            outp.push_back(toupper(inp[i]));
+        }
+    }
+
+    return outp;
+}
+
+string ReadThing(string thing){
     string inp;
 
     cout << "Input the " << thing << ": ";
-
-    getline(cin, inp);
-  
+    cin.ignore();
+    getline(cin, inp);  
 
     return inp;
+}
+
+void ReadPlain(){
+    cout << "Input the Plaintext: ";
+    cin.ignore();
+    getline(cin, word);
+    cut = separate(word);    
+}
+
+void ReadCypher(){
+    cout << "Input the Cyphertext: ";
+    cin.ignore();
+    getline(cin, inpToDcr);
+    cutDcr = separate(inpToDcr);    
+}
+
+void toNum(string inp) {
+
 }
 
 int GetNum(string thing){
@@ -23,34 +69,31 @@ int GetNum(string thing){
     return num;
 }
 
-string separate(string inp){
-    string outp;
-    
-    for(int i = 0;i < inp.length();i++){
-        if(isalpha(inp[i])){
-            outp.push_back(tolower(inp[i]));
-        }
-    }
-
-    return outp;
+void encrOutp(string data){
+    cout << "The Plaintext is: " << word << endl<< data << endl << "The Cyphertext is: " << encripted << endl;
 }
 
-string CeasarEncr(string inp, int shift){
+void dcrOutp(string data){
+    cout << "The Cyphertext is: " << inpToDcr << endl<< data << endl << "The decripted Plaintext is: " << DCRed << endl;
+}
+
+
+void CeasarEncr(){
     string outp;
     bool test = false;
-    int shiftnum;
+    int shift;
     
-    string alph = "abcdefghijklmnopqrstuvwxyz";
+    
 
-    for(int i = 0;i < inp.length();i++){
+    for(int i = 0;i < cut.length();i++){
         for(int l = 0; l < alph.length();l++){
-            if(inp[i] == alph[l]){
-                if((l + shift) < 26){
-                    shiftnum = l + shift;
+            if(cut[i] == alph[l]){
+                if((l + CesarShiftnum) < 26){
+                    shift = l + CesarShiftnum;
                 } else {
-                    shiftnum = (l + shift) - 26;
+                    shift = (l + CesarShiftnum) - 26;
                 }
-                outp.push_back(alph[shiftnum]);
+                outp.push_back(alph[shift]);
                 test = true;
             }
         }
@@ -58,55 +101,227 @@ string CeasarEncr(string inp, int shift){
     }
 
 
-    return outp;
+    encripted = outp;
 }
 
-string CeasarDcr(string inp, int shift){
+void CeasarDcr(){
     string outp;
     bool test = false;
-    int shiftnum;
+    int shift;
     
-    string alph = "abcdefghijklmnopqrstuvwxyz";
 
-    for(int i = 0;i < inp.length();i++){
+    for(int i = 0;i < cutDcr.length();i++){
         for(int l = 0; l < alph.length();l++){
-            if(inp[i] == alph[l]){
-                if((l - shift) > 0){
-                    shiftnum = l - shift;
+            if(cutDcr[i] == alph[l]){
+                if((l - CesarShiftnum) >= 0){
+                    shift = l - CesarShiftnum;
                 } else {
-                    shiftnum = (l - shift) + 26;
+                    shift = (l - CesarShiftnum) + 26;
                 }
-                outp.push_back(alph[shiftnum]);
+                outp.push_back(alph[shift]);
                 test = true;
             }
         }
         test = false;
     }
 
+    DCRed = outp;
+    
+}
 
-    return outp;
+void runCeasar(){
+    int t;
+    string sh = "The shiftnum is: ";
+    cout << "Input shiftnum: ";
+    cin >> CesarShiftnum;
+    sh += to_string(CesarShiftnum);
+    while(t != 0){
+        cout << "Press 0 to exit\nPress 1 to encript\nPress 2 to decript \n";
+        cin >> t;
+        if(t == 1){
+            ReadPlain();
+            CeasarEncr();
+            encrOutp(sh);
+        }else if(t == 2){
+            ReadCypher();
+            CeasarDcr();
+            dcrOutp(sh);
+        }else if(t != 0){
+            cout << "ERROR" << endl;
+        }
+    }
+
+    cout << "End Ceaser Cypher" << endl;
+    clear();
+}
+
+void makeKeyV(int t) {
+    int L;
+    int KL = VkeyT.length();
+    string K = VkeyT;
+
+    if(t == 1){
+        L = cut.length();
+    }
+    if(t == 2){
+        L = cutDcr.length();
+    }
+
+
+    while(L >= K.length()){
+        for(int i = 0; i < KL && K.length() <= L; i++) {
+            K.push_back(VkeyT[i]);
+        }
+    }
+
+    Vkey = K;
+}
+
+void VigenereEncr(){
+    string outp;
+    int a, b, t, f;
+    for(int i = 0; i < cut.length(); i++) {
+        a = alph.find(cut[i]);
+        b = alph.find(Vkey[i]);
+        t = (a + b) % 26;
+        if((t) < 26){
+            if(t < 0){
+                f = t + 26;
+            }else{
+                f = t;
+            }
+        }else{
+            f = t - 26;
+        }
+        outp.push_back(alph[f]);
+    }
+    encripted = outp;
+}
+
+void VigenereDcr(){
+    string outp;
+    int a, b, t, f;
+    for(int i = 0; i < cutDcr.length(); i++) {
+        a = alph.find(cutDcr[i]);
+        b = alph.find(Vkey[i]);
+        t = (a - b) % 26;
+        if((t) < 26){
+            if(t < 0){
+                f = t + 26;
+            }else{
+                f = t;
+            }
+        }else{
+            f = t - 26;
+        }
+        outp.push_back(alph[f]);
+    }
+    DCRed = outp;
+}
+
+void runVigenere() {
+    int t;
+    cout << "Input the key: ";
+    cin >> VkeyT;
+
+    while(t != 0){
+        cout << "Press 0 to exit\nPress 1 to encript\nPress 2 to decript \n";
+        cin >> t;
+        if(t == 1){
+            ReadPlain();
+            makeKeyV(t);
+            cout << Vkey << endl;
+            VigenereEncr();
+            encrOutp("The key is: " + VkeyT);
+        }else if(t == 2){
+            ReadCypher();
+            makeKeyV(t);
+            VigenereDcr();
+            dcrOutp("The key is: " + VkeyT);
+        }else if(t != 0){
+            cout << "ERROR" << endl;
+        }
+    }
+
+    cout << "End Vigenere Cypher" << endl;
+    clear();
+}
+
+void makeKeyA(int t) {
+    int L;
+    string K = Akey;
+    string msg;
+
+    if(t == 1){
+        L = cut.length();
+        msg = cut;
+    }
+    if(t == 2){
+        L = cutDcr.length();
+        msg = cutDcr;
+    }
+
+    K += msg.substr(0, (msg.length() - 2));
+
+    Vkey = K;
+}
+
+void runAutokey() {
+    int t;
+    cout << "Input the key: ";
+    cin >> Akey;
+    ReadPlain();
+    makeKeyA(t);
+    cout << Vkey << endl;
+    VigenereEncr();
+    encrOutp("The key is: " + Akey);
+    while(t != 0){
+        cout << "Press 0 to exit\nPress 1 to encript\nPress 2 to decript \n";
+        cin >> t;
+        if(t == 1){
+            ReadPlain();
+            makeKeyA(t);
+            cout << Vkey << endl;
+            VigenereEncr();
+            encrOutp("The key is: " + Akey);
+        }else if(t == 2){
+            ReadCypher();
+            VigenereDcr();
+            dcrOutp("The key is: " + Akey);
+        }else if(t != 0){
+            cout << "ERROR" << endl;
+        }
+    }
+
+    cout << "End Autokey Cypher" << endl;
+    clear();
+}
+
+void run(){
+    int t;
+
+
+    while(t != 0){
+        cout << "Press 1 for Ceaser Cypher \nPress 2 for Vigenere Cypher \nPress 3 for Autokey Cypher \nPress 0 to exit" << endl;
+        cin >> t;
+        cin.ignore();
+        if(t == 1){
+            runCeasar();
+        }else if(t == 2) {
+            runVigenere();
+        }else if(t == 3){
+            runAutokey();
+        }else if(t != 0){
+            cout << "ERROR" << endl;
+        }
+    }
 }
 
 int main() {
-    string word, cut;
-    int num;
-    word = ReadMsg("string");
-
-    cut = separate(word);
-
-    cout << word <<"\n";
-    cout << cut << "\n";
-
-    cout << "to encript press 1 to decript press 2 ";
-    cin >> num;
-
-    if(num == 1){
-        cout << CeasarEncr(cut, GetNum("number of the shift must be < 26")) << endl;
-    }else {
-        cout << CeasarDcr(cut, GetNum("number of the shift must be < 26")) << endl;
-    }
-
     
+    run();
+
+
 
 
 
