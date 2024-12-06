@@ -230,7 +230,6 @@ void runVigenere() {
         if(t == 1){
             ReadPlain();
             makeKeyV(t);
-            cout << Vkey << endl;
             VigenereEncr();
             encrOutp("The key is: " + VkeyT);
         }else if(t == 2){
@@ -272,7 +271,6 @@ void runAutokey() {
     cin >> Akey;
     ReadPlain();
     makeKeyA(t);
-    cout << Vkey << endl;
     VigenereEncr();
     encrOutp("The key is: " + Akey);
     while(t != 0){
@@ -281,7 +279,6 @@ void runAutokey() {
         if(t == 1){
             ReadPlain();
             makeKeyA(t);
-            cout << Vkey << endl;
             VigenereEncr();
             encrOutp("The key is: " + Akey);
         }else if(t == 2){
