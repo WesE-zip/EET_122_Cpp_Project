@@ -7,6 +7,7 @@ using namespace std;
 string word, cut, encripted, inpToDcr, cutDcr, DCRed; //Variable declaration of the main variables
 string Vkey, VkeyT, Akey;//Declaration of variables for the encription methods
 int CesarShiftnum;
+int a, b, Ainv;
 
 const string alph = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"; //Declaration of an alphabet string
 
@@ -303,6 +304,82 @@ void runAutokey() {
     cout << "End Autokey Cypher" << endl;
     clear();
 }
+
+/*void AffineEncr() {
+    string outp;
+    int n;
+    for(int i = 0; i < cut.length(); i++) {
+        n = (a * (alph.find(cut[i])) + b) % 26;
+        if((n) < 26){
+            if(n < 0){
+                n = n + 26;
+            }else{
+                n = n;
+            }
+        }else{
+            n = n - 26;
+        }
+        outp.push_back(alph[n]);
+    }
+    encripted = outp;
+}
+
+void AffineDcr() {
+    string outp;
+    int f, n;
+    for(int i = 0; i < 26; i++) {
+        if((((a % 26) * (i % 26)) % 26) == 1) {
+            Ainv = i;
+            //cout << "\n test  " + Ainv << " \n ";
+        }
+    }
+
+    for(int i = 0; i < cutDcr.length(); i++) {
+        n = (Ainv * (alph.find(cutDcr[i]) - b)) % 26;
+        if((n) < 26){
+            if(n < 0){
+                n = n + 26;
+            }else{
+                n = n;
+            }
+        }else{
+            n = n - 26;
+        }
+        outp.push_back(alph[n]);
+    }
+
+    DCRed = outp;
+}
+
+void runAffine() {
+    int t; //Input num
+    cout << "Input the A: "; //Gets the a
+    cin >> a;
+    cout << "Input the B: "; //Gets the b
+    cin >> b;
+    string A = ("A is: "); //Preparing A and B outputs
+    string B = (" B is: ");
+    A += to_string(a);
+    B += to_string(b);
+    while(t != 0){
+        cout << "Press 0 to exit\nPress 1 to encript\nPress 2 to decript \n"; //Menu 
+        cin >> t;
+        if(t == 1){ //Encription
+            ReadPlain(); //Reads plaintext
+            AffineEncr(); //Uses the Affine Encription to encript
+            encrOutp(A + B); //Outputs
+        }else if(t == 2){ //Decription
+            ReadCypher(); //Reads Cyphertext
+            AffineDcr(); //Uses the Affine Decription to Decript
+            dcrOutp(A + B); //Outputs
+        }else if(t != 0){ //Incase they input sompthing else
+            cout << "ERROR" << endl;
+        }
+    }
+
+    cout << "End Affine Cypher" << endl;
+    clear();
+}*/
 
 //Runs the main menu
 void run(){
